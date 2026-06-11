@@ -1,0 +1,72 @@
+# Reproducible experiment configuration for Persian COVID-19 fake news detection.
+
+project:
+  name: persian-covid-fake-news
+  random_seed: 42
+
+paths:
+  raw_dataset: data/raw/labeled_dataset_v3.csv
+  twitter_raw: data/raw/twitter_covid_raw.csv
+  processed_dataset: data/processed/preprocessed_balanced.csv
+  models_dir: models
+  results_dir: results
+  embeddings_cache: results/embeddings
+
+data:
+  text_column: tweet
+  label_column: Label
+  fake_label: 0   # False rumor / fake
+  real_label: 1   # True rumor / real
+  test_size: 0.30
+  stratify: true
+  drop_duplicates: true
+  shuffle: true
+
+preprocessing:
+  normalize_persian: true
+  remove_urls: true
+  remove_emojis: true
+  remove_extra_whitespace: true
+  min_text_length: 3
+
+embedding:
+  model_name: sentence-transformers/LaBSE
+  batch_size: 32
+  show_progress_bar: true
+  normalize_embeddings: false
+
+training:
+  scale_features: true
+  cv_folds: 10
+  cv_repeats: 3
+  svm:
+    C: 100
+    probability: true
+  knn:
+    n_neighbors: 4
+  logistic_regression:
+    solver: liblinear
+    max_iter: 1000
+  xgboost:
+    eval_metric: logloss
+    colsample_bytree: 0.8
+    learning_rate: 0.4
+    max_depth: 4
+    n_estimators: 100
+    random_state: 42
+  stacking:
+    cv: 5
+    meta_learner: svm
+
+evaluation:
+  metrics:
+    - accuracy
+    - precision
+    - recall
+    - f1
+  plot_confusion_matrix: true
+  plot_roc_curve: true
+  plot_model_comparison: true
+  plot_class_distribution: true
+  plot_embedding_pca: true
+  pca_components: 2
