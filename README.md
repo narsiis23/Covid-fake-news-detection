@@ -273,7 +273,7 @@ Paper (Persian): [`docs/paper/paper.pdf`](docs/paper/paper.pdf)
 
 ---
 
-## Scientific Limitations and Future Work
+## Scientific Limitations
 
 ### Limitations
 
@@ -284,78 +284,9 @@ Paper (Persian): [`docs/paper/paper.pdf`](docs/paper/paper.pdf)
 5. **Telegram notebook parity** — Original Telegram notebook duplicated Twitter code and used the same CSV; platform-specific Telegram raw data was not bundled separately.
 6. **Computational cost** — LaBSE embedding of thousands of tweets requires GPU or patience on CPU.
 
-### Future work
 
-- Fine-tune Persian BERT / XLM-R instead of frozen LaBSE embeddings
-- Active learning with expert annotators to refine weak labels
-- Incorporate multimodal signals (images linked in tweets)
-- Deploy real-time inference API with model versioning
-- Extend to other low-resource languages and health misinformation domains
-- Add explainability (LIME/SHAP) for model predictions
 
----
 
-## Audit Report (Repository Refactoring)
-
-### Detected issues in original notebooks
-
-| Issue | Severity | Details |
-|-------|----------|---------|
-| **Massive code duplication** | High | `get_stacking()`, `get_models()`, `evaluate_model()` copied 10+ times per notebook; Twitter and Telegram notebooks ~95% identical |
-| **Hardcoded paths** | High | `pd.read_csv('Labeled Dataset (False-Rumor(0),True-Rumor(1))V3.csv')` — fails outside notebook directory |
-| **No random seed on CV** | Medium | `KFold(random_state=None)` in several cells |
-| **Data leakage risk** | Medium | `preprocessor.fit_transform(X_test)` — test set used to fit embedding pipeline in some cells |
-| **Unused imports** | Low | `gensim`, `cosine_similarity`, `KeyedVectors`, `emojis`, `URLExtract`, `parsivar`, `hazm` imported but not used in ML pipeline |
-| **Deprecated APIs** | Medium | `plot_confusion_matrix` (sklearn), `iplot`/`plotly.offline`, inline `!pip install`, XGBoost `use_label_encoder` |
-| **Notebook bloat** | High | 4MB+ notebooks with embedded Plotly JS (~130+ cells, many empty/duplicate) |
-| **Inconsistent metrics** | Medium | Mix of accuracy and F1; variable model configs across duplicate cells |
-| **No requirements.txt** | High | Dependencies only implied via pip magic commands |
-| **No LICENSE or README** | High | Not suitable for public GitHub release |
-| **Inefficient preprocessing** | Medium | Persian NLP libraries loaded but bypassed; LaBSE runs on minimally cleaned text |
-
-### Improvements applied
-
-- Consolidated duplicated logic into `src/` modules
-- Added `config/default.yaml` for reproducible experiments
-- Added CLI (`python -m src.cli train`)
-- Fixed train/test embedding pipeline (fit on train only)
-- Standardized evaluation metrics and visualization
-- Renamed datasets to consistent snake_case paths
-- Added MIT LICENSE, `.gitignore`, `requirements.txt`, `pyproject.toml`
-- Replaced 4MB notebooks with slim 5-cell demos
-
-### Recommended further improvements
-
-1. Add unit tests for preprocessing and metrics (`pytest`)
-2. Pin exact dependency versions in a `requirements-lock.txt` after validation run
-3. Publish labeled dataset on Zenodo with DOI
-4. Add GitHub Actions CI (lint + smoke test)
-5. Cache LaBSE embeddings to avoid recomputation
-6. Add Docker image for fully reproducible environment
-7. Separate Telegram-specific raw data if available
-8. Add model cards documenting bias and intended use
-
----
-
-## GitHub Publication Checklist
-
-- [x] Clean directory structure (`data/`, `src/`, `notebooks/`, `results/`)
-- [x] Consistent file naming (snake_case)
-- [x] `README.md` with installation, usage, citation
-- [x] `requirements.txt` and `pyproject.toml`
-- [x] `LICENSE` (MIT)
-- [x] `.gitignore` (exclude caches, large artifacts, legacy folders)
-- [x] Configuration file for reproducibility
-- [x] CLI entry point
-- [x] Slim demonstration notebooks
-- [x] Paper archived under `docs/paper/`
-- [ ] Create GitHub repository and push
-- [ ] Add repository URL to BibTeX citation
-- [ ] Run full training pipeline and commit result snapshots
-- [ ] Enable GitHub Actions CI
-- [ ] Add CONTRIBUTING.md and CODE_OF_CONDUCT.md (optional)
-- [ ] Create v1.0.0 GitHub Release with tagged commit
-- [ ] Upload dataset DOI to Zenodo (optional but recommended)
 
 ---
 
