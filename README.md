@@ -287,13 +287,6 @@ Paper (Persian): [`docs/paper/paper.pdf`](docs/paper/paper.pdf)
 
 
 
-
----
-
-## License
-
-This project is released under the [MIT License](LICENSE).
-
 ## Author
 
 **Narges Sedrehneshin**
