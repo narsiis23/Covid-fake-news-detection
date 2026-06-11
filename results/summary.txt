@@ -1,0 +1,11 @@
+total_samples: 9039
+class_counts:
+label
+real    4774
+fake    4265
+missing_values:
+tweet_id           9039
+tweet_text_hash       0
+label                 0
+date               9039
+language           9039
