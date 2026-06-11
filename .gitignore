@@ -1,0 +1,50 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.env
+.venv/
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data artifacts (keep raw/processed CSVs tracked; ignore large generated files)
+results/*
+!results/.gitkeep
+models/*
+!models/.gitkeep
+
+# Embeddings cache
+results/embeddings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Legacy artifacts (kept locally for reference)
+legacy/
+Narges.Sedrehneshin.zip
+Narges_Sedrehneshin_paper*.pdf
+Narges_Sedrehneshin_paper*.docx
+
+# Old folders (removed after refactor)
+Code/
+Data/
+
+# Python packaging
+*.egg-info/
+dist/
+build/
+
+# Logs
+*.log
+.pytest_cache/
